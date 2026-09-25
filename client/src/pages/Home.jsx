@@ -2,6 +2,8 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import { useSelector } from 'react-redux'
 import {motion} from "motion/react";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   BsRobot,
   BsMic,
@@ -13,6 +15,8 @@ import { HiSparkles } from 'react-icons/hi';
 
 function Home() {
   const {userData} = useSelector((state)=>state.user)
+  const [showAuth, setShowAuth] = useState(false);
+  const navigate = useNavigate();
   return (
     <div className='min-h-screen bg-[#f3f3f3] flex flex-col'>
         <Navbar/>
@@ -48,9 +52,47 @@ function Home() {
                  adaptive difficulty and real time performance evaluation.
 
               </motion.p>
+              <div className='mt-10 flex flex-wrap justify-center gap-4'>
+                <motion.button 
+                onClick={()=>{
+                  if(!userData){
+                    setShowAuth(true)
+                    return;
+                  }
+                  navigate("/interview")
+                }}
+                whileHover={{opacity:0.8 , scale:1.03}}
+                whileTap={{opacity:1, scale:0.98}}
+                className=' bg-black text-white px-10 py-3 rounded-full  hover:opacity-90 transition shadow-md'>
+                  Start Interview
+
+
+                </motion.button>
+
+                 <motion.button 
+                onClick={()=>{
+                  if(!userData){
+                    setShowAuth(true)
+                    return;
+                  }
+                  navigate("/history")
+                }}
+                whileHover={{opacity:0.8 , scale:1.03}}
+                whileTap={{opacity:1, scale:0.98}}
+                className='border border-gray-300 text-gray-700 px-10 py-3 rounded-full  hover:bg-gray-100 transition shadow-md'>
+                  View Interview History
+
+
+                </motion.button>
+
+              </div>
+            </div>
+            <div className='flex flex-col md:flex-row items-center justify-center gap-10 mb-28'>
+
             </div>
 
         </div>
+        {showAuth && <AuthModel onClose={() =>setShowAuth(false)}/>}
     </div>
   )
 }
